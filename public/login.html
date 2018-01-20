@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Pump N Dump!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="login-container">
+        <input id="api-key" type="text"><br/>
+        <button onclick="login()">Login</button>
+    </div>
+
+<!-- Electron Render -->
+<script>
+//allow server&client to talk
+const {ipcRenderer} = require('electron');
+//on valid API Key
+ipcRenderer.on('validKey', (event, arg) => {
+    window.location.href = "index.html";//move to pumpNdump page
+});
+//verify and use API Key 
+function login(){
+    ipcRenderer.send('apiKey', document.getElementById('api-key').value);
+}
+</script>
+</body>
+</html>

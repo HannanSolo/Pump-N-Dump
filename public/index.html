@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Pump N Dump!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- Page Container -->
+<div id="page-container">
+    <!-- Pump Buttons -->
+    <div id="pump-container">
+        <div id="coins-container">
+
+        </div>
+    </div>
+
+    <!-- Dump Button -->
+    <div id="dump-container">
+        <div id="dump-card" class="buttons">
+            <p class="button-text">Bit Coin</p>
+            <p class="button-text">Hey Look A description</p>
+        </div>
+    </div>
+</div>
+
+
+<!-- Electron Render -->
+<script>
+//allow server&client to talk
+const {ipcRenderer} = require('electron');
+//ask for api data
+ipcRenderer.send('readyForData', '');
+//on obtained api data
+ipcRenderer.on('apiData', (event, arg) => {
+    console.log(arg);
+});
+
+
+
+
+//add coin cards to html
+    var coins = 6;
+    var holder = document.getElementById('coins-container');
+    for(i = 0; i < coins; i++){
+        holder.innerHTML += 
+            '<div id=coin'+i+' class="buttons">'
+                +'<p class="button-text">Coin 1</p>'
+                +'<p class="button-text">Hey Look A description</p>'
+                +'<div class="slidecontainer">'
+                    +'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
+                +'</div>'
+            +'</div>';
+    }
+</script>
+</body>
+</html>

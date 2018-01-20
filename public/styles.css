@@ -1,0 +1,144 @@
+body{
+    background-image: url(images/background.png);
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: #f0edf2;
+    background-repeat: no-repeat;
+    background-size: cover;
+    max-width: 100%;
+    font: normal normal normal 50px Arial,sans-serif;
+}
+
+::-moz-selection{
+    background-color:Transparent;
+    color:#fff;
+    }
+
+::selection {
+    background-color:Transparent;
+    color:#fff;
+    }
+
+@font-face {
+    font-family: "BN-titling-oblique";
+    src: url(fonts/big-noodle-titling-oblique.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "BN-titling";
+    src: url(fonts/big-noodle-titling.ttf) format("truetype");
+}
+
+#apiKey{
+
+}
+
+#login-container{
+    display: block;
+    margin: auto; 
+    text-align: center;
+}
+
+#page-container{
+    display: block;
+    margin: auto;
+    max-width: 1330px;
+}
+
+#pump-container{
+    float: left;
+}
+
+#dump-container{
+    float: right;
+    display: block;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+    width: auto;
+    /* max-width: 300px; */
+    height: auto;
+}
+
+.coins-container::-moz-selection,
+.coins-container::selection{
+	background-color:Transparent;
+    color:#fff;
+}
+
+#coins-container {
+    display: block;
+    margin: auto;
+    padding: 20px;
+    /* text-align: center; */
+    width: auto;
+    max-width: 715px;
+    height: auto;
+}
+
+.button-text{
+ text-align: center;
+ font-size: 35px;
+}
+
+.buttons {
+    display: inline-block;
+    margin: auto;
+    padding: 3px;
+    margin-top: 3px;
+    /* width: 30%; */
+    max-width: 219px;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.49);
+    /* border-radius: 100%; */
+}
+
+.buttons:hover {
+    background-color: rgba(0, 0, 0, 1);
+    cursor: pointer;
+}
+
+.buttons:active {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.button-text{
+	font-family: "BN-titling", Fallback, sans-serif;
+	font-size: 50px;
+	color: #fff;
+	margin: 0;
+	pointer-events: none;
+}
+
+@media (max-width: 365px) {
+  .nav-item, .nav-slash{
+    font-size: 40px;
+}
+
+@media (max-width: 337px) {
+  .buttons{
+    padding: 10px;
+    width: 17%;
+}
+
+@media (max-width: 298px) {
+  .nav-item, .nav-slash{
+    font-size: 35px;
+  }
+}
+
+@media (max-width: 270px) {
+  .nav-item, .nav-slash{
+    font-size: 30px;
+  }
+  #button-power{
+    font-size: 19px;
+  }
+  #button-guide, #button-enter{
+    font-size: 20px;
+  }
+
+}
