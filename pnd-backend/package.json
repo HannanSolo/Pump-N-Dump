@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/ThePixelBro22/Pump-N-Dump#readme",
   "dependencies": {
+    "node-binance-api": "^0.4.4",
     "request": "^2.83.0"
   }
 }
