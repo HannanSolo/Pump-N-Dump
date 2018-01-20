@@ -1,0 +1,26 @@
+{
+  "name": "pnd-backend",
+  "version": "1.0.0",
+  "description": "A tool for trading ez style",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThePixelBro22/Pump-N-Dump.git"
+  },
+  "keywords": [
+    "trading",
+    "bitcoin"
+  ],
+  "author": "Hannan Rhodes & Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ThePixelBro22/Pump-N-Dump/issues"
+  },
+  "homepage": "https://github.com/ThePixelBro22/Pump-N-Dump#readme",
+  "dependencies": {
+    "request": "^2.83.0"
+  }
+}
