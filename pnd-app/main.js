@@ -69,12 +69,21 @@ app.on('activate', function () {
 /////////////////////////
 // Pump Dump API
 ////////////////////////
+var apiData = {}//store api data here
 const {ipcMain} = require('electron');//allow server&client to talk
-
-//On User API Key
+//////////////////////////////
+//On Obtain User API Key
 ipcMain.on('apiKey', (event, arg) => {
+  console.log(arg);
+  /*
+    //obtain all commerce data and stuff...
+  */
 
-  console.log(arg);//log api key
-  event.sender.send('validKey', 'to_be_data...');
-
-})
+  //when finished tell client
+  event.sender.send('validKey', '');
+});
+//////////////////////////////
+//On Client Ready For Data
+ipcMain.on('readyForData', (event, arg) => {
+  event.sender.send('apiData', 'fakeDataOhBoy');//send api data
+});

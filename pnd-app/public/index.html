@@ -27,14 +27,23 @@
 
 
 <!-- Electron Render -->
-<script>require('./renderer.js')
-var ipcRenderer = require('electron').ipcRenderer; 
-
-</script>
 <script>
+//allow server&client to talk
+const {ipcRenderer} = require('electron');
+//ask for api data
+ipcRenderer.send('readyForData', '');
+//on obtained api data
+ipcRenderer.on('apiData', (event, arg) => {
+    console.log(arg);
+});
+
+
+
+
+//add coin cards to html
     var coins = 6;
     var holder = document.getElementById('coins-container');
-    for(i = 0; i < coins; i++)
+    for(i = 0; i < coins; i++){
         holder.innerHTML += 
             '<div id=coin'+i+' class="buttons">'
                 +'<p class="button-text">Coin 1</p>'
@@ -42,8 +51,8 @@ var ipcRenderer = require('electron').ipcRenderer;
                 +'<div class="slidecontainer">'
                     +'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
                 +'</div>'
-            +'</div>'
-        ;
+            +'</div>';
+    }
 </script>
 </body>
 </html>

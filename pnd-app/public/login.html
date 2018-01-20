@@ -18,13 +18,12 @@
 const {ipcRenderer} = require('electron');
 //on valid API Key
 ipcRenderer.on('validKey', (event, arg) => {
-    window.location.href = "index.html";
+    window.location.href = "index.html";//move to pumpNdump page
 });
-
+//verify and use API Key 
 function login(){
     ipcRenderer.send('apiKey', document.getElementById('api-key').value);
 }
-
 </script>
 </body>
 </html>
