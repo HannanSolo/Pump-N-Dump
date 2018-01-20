@@ -11,13 +11,20 @@
         <input id="api-key" type="text"><br/>
         <button onclick="login()">Login</button>
     </div>
-    
-<script>
-    function login(){
-        window.location.href = "index.html";
-    }
-</script>
+
 <!-- Electron Render -->
-<script>require('./renderer.js')</script>
+<script>
+//allow server&client to talk
+const {ipcRenderer} = require('electron');
+//on valid API Key
+ipcRenderer.on('validKey', (event, arg) => {
+    window.location.href = "index.html";
+});
+
+function login(){
+    ipcRenderer.send('apiKey', document.getElementById('api-key').value);
+}
+
+</script>
 </body>
 </html>

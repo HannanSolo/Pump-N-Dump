@@ -27,9 +27,12 @@
 
 
 <!-- Electron Render -->
-<script>require('./renderer.js')</script>
+<script>require('./renderer.js')
+var ipcRenderer = require('electron').ipcRenderer; 
+
+</script>
 <script>
-    var coins = 3;
+    var coins = 6;
     var holder = document.getElementById('coins-container');
     for(i = 0; i < coins; i++)
         holder.innerHTML += 
