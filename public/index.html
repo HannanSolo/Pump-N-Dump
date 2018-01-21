@@ -11,13 +11,12 @@
         
 <!-- Page Container -->
 <div id="page-container">
+    <div id="addCoin" style="font-size:64px;display:inline-flex;align-items:center;justify-items:center;">
+        <button onclick="addCoinCard()" style="width:225px; height:50px; background-color:blue;border:0px"> + </button>
+    </div>
     <!-- Pump Buttons -->
     <div id="pump-container">
         <div id="coins-container">
-            <div id="addCoin" style="font-size:64px;display:inline-flex;align-items:center;justify-items:center;">
-                <button onclick="addCoinCard()" style="width:225px; height:50px; background-color:blue;border:0px"> + </button>
-            </div>
-            
         </div>
     </div>
 
@@ -35,6 +34,7 @@
 <!-- Electron Render -->
 
 <script>
+var apiData = {}
 const prompt = require('electron-prompt');
 //allow server&client to talk
 const {ipcRenderer} = require('electron');
@@ -43,6 +43,7 @@ ipcRenderer.send('readyForData', '');
 //on obtained api data
 var initialData = true;
 ipcRenderer.on('apiData', (event, data) => {
+    apiData = event
     //if first request
     //if(initialData){
         populatePage(data);
@@ -59,6 +60,12 @@ ipcRenderer.send('readyForGraph', '');
 ipcRenderer.on('graphData', (event, arg) => {
     console.log(arg);
 })
+
+setInterval(function(){
+    if(apiData !== {}){
+        //...update price
+    }
+},3000)
 
 //////////////////////////
 // Functions
