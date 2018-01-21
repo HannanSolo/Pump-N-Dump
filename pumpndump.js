@@ -151,3 +151,24 @@ module.exports.pumpOrder = pumpOrder;
 module.exports.graphData = graphData;
 module.exports.dayGraph = dayGraph;
 module.exports.getNewCoins = getNewCoins;
+
+/*
+Format for using functions:
+init(apiKey, secretKey);
+
+getBalance(function(balance) {
+    console.log(balance); //prints all coins owned and available balance
+});
+
+getPrices = getPrices(function(prices) {
+    console.log(prices); //Prints each coinpair and corresponding price
+})
+
+dumpOrder("LTC", .5); //Market sell order for LTC to BTC. Sells 50% of current balance.
+
+pumpOrder("LTC", .4, .045); //Market buy order for LTC from BTC. Uses 40% of .045 BTC to buy corresponding amount in LTC.
+
+graphData(function(data) {
+    console.log(data) //Prints closing prices of every 12 hours over last week. 14 data points. 
+}, "LTC") //pass in Symbol to get data points of
+*/
