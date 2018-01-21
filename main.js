@@ -109,15 +109,6 @@ ipcMain.on('readyForGraph', (event, arg) => {
       event.sender.send('graphData', {ticker: value, data: data});
     }, value)
   })
-
-  
-  // pnd.graphData(function(data) {
-  //   // console.log(apiData.balances)
-  //   // console.log(data); //Prints closing prices of every 12 hours over last week. 14 data points. 
-    
-
-    event.sender.send('graphData', data);
-  }, "LTC");
 });
 
 ipcMain.on('pump', (event, arg) => {
