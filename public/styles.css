@@ -38,7 +38,7 @@ body{
 
 #login-container{
     display: block;
-    margin: auto; 
+    margin: auto;
     text-align: center;
 }
 
@@ -95,9 +95,10 @@ body{
     background-color: rgba(0, 0, 0, 0.49);
     /* border-radius: 100%; */
 }
-/* 
+
 .buttons:hover {
     background-color: rgba(0, 0, 0, 1);
+
     cursor: pointer;
 }
 

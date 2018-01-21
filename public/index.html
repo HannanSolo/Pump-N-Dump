@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <script type="text/javascript" src="js/Chart.js"></script>
 
+
 </head>
 <body>
         
@@ -23,11 +24,9 @@
     <div id="dump-container">
         <div id="dump-card" class="buttons">
             <p class="button-text">Bitcoin</p>
-            <p class="button-text">How much do you want to deposit?</p>
+            <p class="button-text">How much do you want to pump?</p>
             <input id="pump-amount" type="text"><br/>
-            <p class="button-text">Bitcoin Address</p>
-            <input id="btc-address" type="text"><br/>
-            <button onclick="login()">Login</button>
+            <button onclick="pump()">PUMP!</button>
         </div>
     </div>
 </div>
@@ -35,6 +34,7 @@
 
 
 <!-- Electron Render -->
+<script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 //allow server&client to talk
 const {ipcRenderer} = require('electron');
@@ -44,6 +44,7 @@ ipcRenderer.send('readyForData', '');
 ipcRenderer.on('apiData', (event, arg) => {
     console.log(arg);
 });
+
 
 
 
