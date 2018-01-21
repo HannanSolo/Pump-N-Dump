@@ -22,12 +22,8 @@
 
     <!-- Dump Button -->
     <div id="dump-container">
-        <div id="dump-card" class="coins">
-            <p class="button-text">Bitcoin</p>
-            <p class="button-text">How much do you want to pump?</p>
-            <input id="pump-amount" type="text"><br/>
-            <button onclick="pump()">PUMP!</button>
-        </div>
+        <div id="dump-card">
+        
     </div>
 </div>
 
@@ -41,16 +37,11 @@ const {ipcRenderer} = require('electron');
 //ask for api data
 ipcRenderer.send('readyForData', '');
 //on obtained api data
-var initialData = true;
 ipcRenderer.on('apiData', (event, data) => {
     apiData = event
-    //if first request
-    //if(initialData){
-        populatePage(data);
-        initialData = false;
-        console.log(event);
-        console.log(data);
-    //}
+    populatePage(data);
+    console.log(event);
+    console.log(data);
     //ask for more data every 2 seconds
     setTimeout(function(){
         ipcRenderer.send('readyForData', '');
@@ -86,6 +77,10 @@ function populatePage(data){
         if(coin !== 'BTC')
             createChart(coin);
     }
+
+    //BTC Card
+    createBitCoinCard('BTC');
+    createChart('BTC');
 }
 
 //create cards for other coins
@@ -110,15 +105,20 @@ function createBitCoinCard(coinName){
     if(document.getElementById(coinName.toLowerCase()))
         return;
     //add coin card
-    var holder = document.getElementById('dump-container');
-    holder.innerHTML +=
+    var holder = document.getElementById('dump-card');
+    holder.innerHTML =
         '<div id='+coinName.toLowerCase()+' class="coins">'
             +'<p class="button-text">'+coinName+'</p>'
             +'<p class="button-text"><canvas width="219" height="219"></canvas></p>'
             +'<div class="slidecontainer">'
-                +'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
+            +'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
             +'</div>'
         +'</div>';
+
+        // <p class="button-text">Bitcoin</p>
+        //     <p class="button-text">How much do you want to pump?</p>
+        //     <input id="pump-amount" type="text"><br/>
+        //     <button onclick="pump()">PUMP!</button>
 }
 
 function addCoinCard() {
