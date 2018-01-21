@@ -98,11 +98,16 @@ ipcMain.on('readyForData', (event, arg) => {
 });
 
 ipcMain.on('readyForGraph', (event, arg) => {
-  let gdata = null;
+  let coinz = {};
+  
   pnd.graphData(function(data) {
-    console.log(data); //Prints closing prices of every 12 hours over last week. 14 data points. 
-    let gdata = data;
-    event.sender.send('graphData', gdata);
+    // Object.keys(apiData.balances).map(function(value, key) {
+    //   console.log(key + ': ' + value);
+    // })
+    // console.log(apiData.balances)
+    // console.log(data); //Prints closing prices of every 12 hours over last week. 14 data points. 
+    
+    event.sender.send('graphData', data);
   }, "LTC")
   
 });

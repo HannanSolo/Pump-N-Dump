@@ -43,22 +43,25 @@ ipcRenderer.send('readyForData', '');
 //on obtained api data
 var initialData = true;
 ipcRenderer.on('apiData', (event, data) => {
-    apiData = event
+    apiData.prices = data.prices;
+    apiData.balances = data.balances;
     //if first request
     //if(initialData){
         populatePage(data);
         initialData = false;
-        console.log(event);
-        console.log(data);
     //}
     //ask for more data every 2 seconds
     setTimeout(function(){
         ipcRenderer.send('readyForData', '');
     },5000);
 });
-ipcRenderer.send('readyForGraph', '');
+setTimeout(function() {
+    ipcRenderer.send('readyForGraph', '')
+}, 5000);
 ipcRenderer.on('graphData', (event, arg) => {
-    console.log(arg);
+    apiData.ltc = arg;
+    console.log(apiData.balances);
+    console.log(apiData.ltc);
 })
 
 setInterval(function(){
@@ -84,7 +87,9 @@ function populatePage(data){
     for(var coin in data.balances){
         //ignore bitcoin
         if(coin !== 'BTC')
-            createChart(coin);
+            if (apiData.ltc != {}) {
+                createChart(coin, apiData.ltc);
+            }  
     }
 }
 
@@ -143,16 +148,16 @@ function addCoinCard() {
     .catch(console.error);
     }
 //create coin card chart
-function createChart(coinName){
+function createChart(coinName, gdata){
     var ctx = document.querySelector('#'+coinName.toLowerCase()+' canvas');
     //var ctx = document.getElementById('bbc');
     Chart.defaults.line.spanGaps = true;
     var coinChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: [0,12,24],
+            labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
             datasets: [{ 
-                data: [0,0,0],
+                data: gdata,
                 borderColor: "#3e95cd",
                 fill: false
             }
