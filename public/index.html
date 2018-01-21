@@ -87,6 +87,22 @@ function createCoinCard(coinName){
             +'</div>'
         +'</div>';
 }
+//create bitcoin card
+function createBitCoinCard(coinName){
+    //skip if coin card already exsits
+    if(document.getElementById(coinName.toLowerCase()))
+        return;
+    //add coin card
+    var holder = document.getElementById('dump-container');
+    holder.innerHTML +=
+        '<div id='+coinName.toLowerCase()+' class="coins">'
+            +'<p class="button-text">'+coinName+'</p>'
+            +'<p class="button-text"><canvas width="219" height="219"></canvas></p>'
+            +'<div class="slidecontainer">'
+                +'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
+            +'</div>'
+        +'</div>';
+}
 //create coin card chart
 function createChart(coinName){
     var ctx = document.querySelector('#'+coinName.toLowerCase()+' canvas');
