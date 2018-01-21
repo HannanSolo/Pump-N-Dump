@@ -10,7 +10,7 @@
 
 </head>
 <body>
-        
+
 <!-- Page Container -->
 <div id="page-container">
     <!-- Pump Buttons -->
@@ -20,9 +20,9 @@
         </div>
     </div>
 
-    <!-- Dump Button -->
-    <div id="dump-container">
-        <div id="dump-card" class="buttons">
+    <!-- Pump Button -->
+    <div id="pump-container">
+        <div id="pump-card" class="buttons">
             <p class="button-text">Bitcoin</p>
             <p class="button-text">How much do you want to pump?</p>
             <input id="pump-amount" type="text"><br/>
@@ -34,7 +34,7 @@
 
 
 <!-- Electron Render -->
-<script src="https://d3js.org/d3.v4.min.js"></script>
+
 <script>
 //allow server&client to talk
 const {ipcRenderer} = require('electron');
@@ -46,24 +46,33 @@ ipcRenderer.on('apiData', (event, arg) => {
 });
 
 
-
-
-
-
-
-//add coin cards to html
-var coins = 6;
+//add shitcoin cards to html grid
+var coins = 3;
 var holder = document.getElementById('coins-container');
 for(i = 0; i < coins; i++){
     holder.innerHTML +=
         '<div id=coin'+i+' class="buttons">'
             +'<p class="button-text">Coin 1</p>'
-            +'<p class="button-text"><canvas id="myChart" width="219" height="219"></canvas></p>'
+            +'<div class="input-group mb-3">'
+              +'<input type="text" class="form-control" aria-label="Text input with dropdown button">'
+            +'</div>'
+            +'<p class="button-text"><canvas id="myChart" width="200" height="200"></canvas></p>'
             +'<div class="slidecontainer">'
-                +'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
+              +'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
             +'</div>'
         +'</div>';
 }
+
+//verify and use pump function
+function pump(){
+    ipcRenderer.send('pump-amount', document.getElementById('pump-amount').value);
+}
+
+//verify and use dump function
+function dump(){
+    ipcRenderer.send('dump-amount', document.getElementById('dump-amount').value);
+}
+
 
 var ctx = document.getElementById("myChart");
 Chart.defaults.line.spanGaps = true;
@@ -71,7 +80,7 @@ var myChart = new Chart(ctx, {
     type: 'line',
   data: {
     labels: [0,12,24],
-    datasets: [{ 
+    datasets: [{
         data: [86,1000,2999],
         borderColor: "#3e95cd",
         fill: false

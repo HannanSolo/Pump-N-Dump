@@ -96,15 +96,6 @@ body{
     /* border-radius: 100%; */
 }
 
-.buttons:hover {
-    background-color: rgba(0, 0, 0, 1);
-
-    cursor: pointer;
-}
-
-.buttons:active {
-    background-color: rgba(255, 255, 255, 1);
-} */
 
 .button-text{
 	font-family: "BN-titling", Fallback, sans-serif;
