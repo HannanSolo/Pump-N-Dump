@@ -22,12 +22,8 @@
 
     <!-- Dump Button -->
     <div id="dump-container">
-        <div id="dump-card" class="coins">
-            <p class="button-text">Bitcoin</p>
-            <p class="button-text">How much do you want to pump?</p>
-            <input id="pump-amount" type="text"><br/>
-            <button onclick="pump()">PUMP!</button>
-        </div>
+        <div id="dump-card">
+        
     </div>
 </div>
 
@@ -41,15 +37,12 @@ const {ipcRenderer} = require('electron');
 //ask for api data
 ipcRenderer.send('readyForData', '');
 //on obtained api data
-var initialData = true;
 ipcRenderer.on('apiData', (event, data) => {
     apiData.prices = data.prices;
     apiData.balances = data.balances;
-    //if first request
-    //if(initialData){
-        populatePage(data);
-        initialData = false;
-    //}
+    populatePage(data);
+    console.log(event);
+    console.log(data);
     //ask for more data every 2 seconds
     setTimeout(function(){
         ipcRenderer.send('readyForData', '');
@@ -69,6 +62,14 @@ setInterval(function(){
         //...update price
     }
 },3000)
+
+setTimeout(function(){
+    setInterval(function(){
+        for(var coin in apiData.balances){
+            document.querySelector("#"+coin.toLowerCase()+" .coinPrice").innerHTML =  document.querySelector("#"+coin.toLowerCase()+" .slider").value;
+        }
+    },1000);
+},3000);
 
 //////////////////////////
 // Functions
@@ -91,6 +92,10 @@ function populatePage(data){
                 createChart(coin, apiData.ltc);
             }  
     }
+
+    //BTC Card
+    createBitCoinCard('BTC');
+    createChart('BTC');
 }
 
 //create cards for other coins
@@ -106,6 +111,7 @@ function createCoinCard(coinName){
             +'<p class="button-text"><canvas width="219" height="219"></canvas></p>'
             +'<div class="slidecontainer">'
                 +'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
+                +'<p class="coinPrice button-text">0</p>'
             +'</div>'
         +'</div>';
 }
@@ -115,15 +121,21 @@ function createBitCoinCard(coinName){
     if(document.getElementById(coinName.toLowerCase()))
         return;
     //add coin card
-    var holder = document.getElementById('dump-container');
-    holder.innerHTML +=
+    var holder = document.getElementById('dump-card');
+    holder.innerHTML =
         '<div id='+coinName.toLowerCase()+' class="coins">'
             +'<p class="button-text">'+coinName+'</p>'
             +'<p class="button-text"><canvas width="219" height="219"></canvas></p>'
             +'<div class="slidecontainer">'
                 +'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
+                +'<p class="coinPrice button-text">0</p>'
             +'</div>'
         +'</div>';
+
+        // <p class="button-text">Bitcoin</p>
+        //     <p class="button-text">How much do you want to pump?</p>
+        //     <input id="pump-amount" type="text"><br/>
+        //     <button onclick="pump()">PUMP!</button>
 }
 
 function addCoinCard() {
