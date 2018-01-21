@@ -79,10 +79,14 @@ ipcMain.on('apiKey', (event, keys) => {
   pnd.init(keys.public, keys.secret);
   //when finished tell client
   event.sender.send('validKey', '');
+  
 });
 //////////////////////////////
 //On Client Ready For Data
 ipcMain.on('readyForData', (event, arg) => {
+  pnd.getNewCoins(function(coins) {
+    apiData.coins = coins;
+  })
   //load exsisting coins
   pnd.getBalance(function(balance){
     apiData.balances = balance;//update data to be sent

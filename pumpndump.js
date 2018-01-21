@@ -123,6 +123,26 @@ function dumpOrder(symbol, percent) {
     });
 }
 
+function getNewCoins(callback) {
+    //use by passing in a callback that takes in a single parameter (array)
+    //eg, allCoins(function(coins) {console.log(coins)} )
+    var userBalance = [];
+    binance.balance(function(error, balances){
+        if (!error) {
+                for(var coin in balances) {
+                    if(balances[coin].available == 0.00000000) {
+                        userBalance.push(coin);
+                    }
+                }
+                callback(userBalance);
+        }
+        else{
+            console.log(error);
+            return;
+        }
+    });
+}
+
 module.exports.init = init;
 module.exports.getBalance = getBalance;
 module.exports.getPrices = getPrices;
@@ -130,3 +150,4 @@ module.exports.dumpOrder = dumpOrder;
 module.exports.pumpOrder = pumpOrder;
 module.exports.graphData = graphData;
 module.exports.dayGraph = dayGraph;
+module.exports.getNewCoins = getNewCoins;
