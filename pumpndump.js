@@ -8,7 +8,6 @@ function init(apiKey, apiSecret){
     binance.options({
         'APIKEY':apiKey,
         'APISECRET':apiSecret,
-        'test':true
     });
     //load exsisting coins
     getBalance(function(balance){
@@ -66,6 +65,8 @@ function dayGraph(callback, symbol) {
     }, {limit: 14});
 }
 
+
+
 //cleans out data of the day graph and returns the data points.
 function graphData(callback, symbol) {
     data = [];
@@ -99,8 +100,12 @@ function pumpOrder(symbol, percent, pumpAmount) {
             };
             console.log("worked!");
             console.log(parseFloat(quantity.toFixed(4)));
-            //send buy command to binance
-            binance.marketBuy(symbol + "BTC", Math.floor(quantity));
+            if(btcToTokenConversion < .001) quantity = Math.floor(quantity);
+            else if(btcToTokenConversion < .01) quantity = parseFloat(quantity.toFixed(1));
+            else if(btcToTokenConversion < .1) quantity = parseFloat(quantity.toFixed(2));
+            else quantity = parseFloat(quantity.toFixed(3));
+            //send buy command to binance &
+            binance.marketBuy(symbol + "BTC",parseFloat(quantity.toFixed(3)));
         });
     });
 }
@@ -120,6 +125,10 @@ function dumpOrder(symbol, percent) {
                 console.log("dumpOrder: didnt have enough coins");
                 return;
             }
+            if(btcToTokenConversion < .001) quantity = Math.floor(quantity);
+            else if(btcToTokenConversion < .01) quantity = parseFloat(quantity.toFixed(1));
+            else if(btcToTokenConversion < .1) quantity = parseFloat(quantity.toFixed(2));
+            else quantity = parseFloat(quantity.toFixed(3));
             //send sell order to binance
             binance.marketSell(symbol + "BTC", quantity);
         });
@@ -131,4 +140,6 @@ module.exports.getBalance = getBalance;
 module.exports.getPrices = getPrices;
 module.exports.dumpOrder = dumpOrder;
 module.exports.pumpOrder = pumpOrder;
+module.exports.graphData = graphData;
+module.exports.dayGraph = dayGraph;
 // init('tW1x0W94x5oj0PvJMkPtvjCNYAt1x1j7lhppBP8699aeZBl2uloxUUXlwUc0S5xZ','dG5CXcMraaYabgkuJzb1wiJRtUrnYGdIDm7JaWGBODVRXWy7Psgwox54jXN9Hkww');
