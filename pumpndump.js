@@ -2,19 +2,24 @@ const binance = require('node-binance-api');
 
 
 function init(apiKey, apiSecret){
+    //initiate all starting info
+
+    //setup api secret and key for storage
     binance.options({
         'APIKEY':apiKey,
-        'APISECRET':apiSecret
+        'APISECRET':apiSecret,
     });
-
+    //load exsisting coins
     getBalance(function(balance){
         console.log('bitch what')
         console.log(balance);
     });
-
+    //load prices
     getPrices(function(prices){
         console.log(prices);
     });
+
+    graphData
 }
 
 
@@ -51,24 +56,90 @@ function getPrices(callback) {
     });
 }
 
-function getGraphData(symbol, time){
-    binance.candlesticks(symbol, time, (error, ticks, symbol) => {
-        console.log("candlesticks()", ticks);
-        let last_tick = ticks[ticks.length - 1];
-        let [time, open, high, low, close, volume, closeTime, assetVolume, trades, buyBaseVolume, buyAssetVolume, ignored] = last_tick;
-        console.log(symbol+" last close: "+close);
-    }, {limit: 500, endTime: 1514764800000});
+//returns a day graph 
+function dayGraph(callback, symbol) {
 
-};
-
-function dumpOrder(symbol, percent) {
-    var tempBalance;
-    getBalance(function(userBalance){
-        tempBalance = userBalance;
-    });
-    if(tempBalance[symbol] <= 0) return;
-    var quantity = tempBalance[symbol].available * percent;
-    binance.marketSell(symbol + "BTC", quantity);
+    binance.candlesticks(symbol + 'BTC', "12h", (error, ticks, symbol) => {
+        callback(ticks);
+        //get 7 days of data.
+    }, {limit: 14});
 }
 
-init('tW1x0W94x5oj0PvJMkPtvjCNYAt1x1j7lhppBP8699aeZBl2uloxUUXlwUc0S5xZ','dG5CXcMraaYabgkuJzb1wiJRtUrnYGdIDm7JaWGBODVRXWy7Psgwox54jXN9Hkww');
+
+
+//cleans out data of the day graph and returns the data points.
+function graphData(callback, symbol) {
+    data = [];
+    dayGraph(function(ticks) {
+        var closes = [];
+        for(var i = 0; i < ticks.length; i++) {
+            closes.push(ticks[i][4]);
+        }
+        data = closes;
+        callback(data);
+    }, symbol);
+} 
+
+//Buy the respected amount of coins on portfolio
+function pumpOrder(symbol, percent, pumpAmount) {
+    var tempBalance;
+    //get users balance of all coins
+    getBalance(function(userBalance){
+        tempBalance = userBalance;
+        var btcToTokenConversion;
+        //gets current prices for all coins and get the ones that need to be pumped 
+        getPrices(function(ticker) {
+
+            btcToTokenConversion = parseFloat(ticker[symbol + 'BTC']);
+            //sets amount to buy of each coin
+            var quantity = pumpAmount * percent / btcToTokenConversion;
+            //check if you have enough money, and percentage is in the right range, and minimal requirement is met.
+            if(tempBalance.BTC.available <= pumpAmount * percent || percent > 1 || percent < 0 || quantity * btcToTokenConversion < .0003) {
+                console.log("pumpOrder: something went wrong, didnt have enough funds");
+                return;
+            };
+            console.log("worked!");
+            console.log(parseFloat(quantity.toFixed(4)));
+            if(btcToTokenConversion < .001) quantity = Math.floor(quantity);
+            else if(btcToTokenConversion < .01) quantity = parseFloat(quantity.toFixed(1));
+            else if(btcToTokenConversion < .1) quantity = parseFloat(quantity.toFixed(2));
+            else quantity = parseFloat(quantity.toFixed(3));
+            //send buy command to binance &
+            binance.marketBuy(symbol + "BTC",parseFloat(quantity.toFixed(3)));
+        });
+    });
+}
+
+function dumpOrder(symbol, percent) {
+
+    var tempBalance;
+
+    getBalance(function(userBalance){
+        tempBalance = userBalance;
+        getPrices(function(ticker) {
+
+            btcToTokenConversion = parseFloat(ticker[symbol + 'BTC']);
+            var quantity = tempBalance[symbol].available * percent;
+            //check if you have enough money to sell
+            if(tempBalance[symbol] <= 0 || percent > 1 || quantity * btcToTokenConversion < .0003) {
+                console.log("dumpOrder: didnt have enough coins");
+                return;
+            }
+            if(btcToTokenConversion < .001) quantity = Math.floor(quantity);
+            else if(btcToTokenConversion < .01) quantity = parseFloat(quantity.toFixed(1));
+            else if(btcToTokenConversion < .1) quantity = parseFloat(quantity.toFixed(2));
+            else quantity = parseFloat(quantity.toFixed(3));
+            //send sell order to binance
+            binance.marketSell(symbol + "BTC", quantity);
+        });
+    });
+}
+
+module.exports.init = init;
+module.exports.getBalance = getBalance;
+module.exports.getPrices = getPrices;
+module.exports.dumpOrder = dumpOrder;
+module.exports.pumpOrder = pumpOrder;
+module.exports.graphData = graphData;
+module.exports.dayGraph = dayGraph;
+// init('tW1x0W94x5oj0PvJMkPtvjCNYAt1x1j7lhppBP8699aeZBl2uloxUUXlwUc0S5xZ','dG5CXcMraaYabgkuJzb1wiJRtUrnYGdIDm7JaWGBODVRXWy7Psgwox54jXN9Hkww');
