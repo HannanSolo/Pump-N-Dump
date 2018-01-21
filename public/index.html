@@ -5,6 +5,13 @@
     <title>Pump N Dump!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="styles.css">
+    <style> /* set the CSS */
+      .line {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 2px;
+      }
+    </style>
 </head>
 <body>
 <!-- Page Container -->
@@ -20,11 +27,9 @@
     <div id="dump-container">
         <div id="dump-card" class="buttons">
             <p class="button-text">Bitcoin</p>
-            <p class="button-text">How much do you want to deposit?</p>
+            <p class="button-text">How much do you want to pump?</p>
             <input id="pump-amount" type="text"><br/>
-            <p class="button-text">Bitcoin Address</p>
-            <input id="btc-address" type="text"><br/>
-            <button onclick="login()">Login</button>
+            <button onclick="pump()">PUMP!</button>
         </div>
     </div>
 </div>
@@ -32,6 +37,7 @@
 
 
 <!-- Electron Render -->
+<script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 //allow server&client to talk
 const {ipcRenderer} = require('electron');
@@ -43,21 +49,29 @@ ipcRenderer.on('apiData', (event, arg) => {
 });
 
 
-
-
 //add coin cards to html
-    var coins = 6;
-    var holder = document.getElementById('coins-container');
-    for(i = 0; i < coins; i++){
-        holder.innerHTML +=
-            '<div id=coin'+i+' class="buttons">'
-                +'<p class="button-text">Coin 1</p>'
-                +'<p class="button-text">Hey Look A description</p>'
-                +'<div class="slidecontainer">'
-                    +'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
-                +'</div>'
-            +'</div>';
+  var coins = 3;
+  var holder = document.getElementById('coins-container');
+  for(i = 0; i < coins; i++){
+      holder.innerHTML +=
+          '<div id=coin'+i+' class="buttons">'
+          +'<p class="button-text">Coin 1</p>'
+          +'<p class="button-text">Hey Look A description</p>'
+          +'<div class="slidecontainer">'
+          +'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
+          +'</div>'
+          +'</div>';
     }
+    //verify and use API Key
+    function pump(){
+        ipcRenderer.send('pump-amount', document.getElementById('pump-amount').value);
+    }
+
+    function dump(){
+        ipcRenderer.send('apiKey', document.getElementById('api-key').value);
+    }
+
+
 </script>
 </body>
 </html>
