@@ -9,19 +9,7 @@ function init(apiKey, apiSecret){
         'APIKEY':apiKey,
         'APISECRET':apiSecret,
     });
-    //load exsisting coins
-    getBalance(function(balance){
-        console.log('bitch what')
-        console.log(balance);
-    });
-    //load prices
-    getPrices(function(prices){
-        console.log(prices);
-    });
-
-    graphData
 }
-
 
 function getBalance(callback){
     var userBalance = {};
@@ -135,6 +123,26 @@ function dumpOrder(symbol, percent) {
     });
 }
 
+function getNewCoins(callback) {
+    //use by passing in a callback that takes in a single parameter (array)
+    //eg, allCoins(function(coins) {console.log(coins)} )
+    var userBalance = [];
+    binance.balance(function(error, balances){
+        if (!error) {
+                for(var coin in balances) {
+                    if(balances[coin].available == 0.00000000) {
+                        userBalance.push(coin);
+                    }
+                }
+                callback(userBalance);
+        }
+        else{
+            console.log(error);
+            return;
+        }
+    });
+}
+
 module.exports.init = init;
 module.exports.getBalance = getBalance;
 module.exports.getPrices = getPrices;
@@ -142,4 +150,4 @@ module.exports.dumpOrder = dumpOrder;
 module.exports.pumpOrder = pumpOrder;
 module.exports.graphData = graphData;
 module.exports.dayGraph = dayGraph;
-// init('tW1x0W94x5oj0PvJMkPtvjCNYAt1x1j7lhppBP8699aeZBl2uloxUUXlwUc0S5xZ','dG5CXcMraaYabgkuJzb1wiJRtUrnYGdIDm7JaWGBODVRXWy7Psgwox54jXN9Hkww');
+module.exports.getNewCoins = getNewCoins;

@@ -1,4 +1,5 @@
-const electron = require('electron')
+const electron = require('electron');
+var pnd = require('./pumpndump.js');
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
@@ -15,9 +16,9 @@ function createWindow () {
   // Create the browser window.
   //mainWindow = new BrowserWindow({width: 800, height: 600})
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    minWidth: 200,
+    width: 1250,
+    height: 800,
+    minWidth: 1020,
     minHeight: 200,
     backgroundColor: '#312450',
     // show: false,
@@ -73,17 +74,22 @@ var apiData = {}//store api data here
 const {ipcMain} = require('electron');//allow server&client to talk
 //////////////////////////////
 //On Obtain User API Key
-ipcMain.on('apiKey', (event, arg) => {
-  console.log(arg);
-  /*
-    //obtain all commerce data and stuff...
-  */
-
+ipcMain.on('apiKey', (event, keys) => {
+  //set API Keys
+  pnd.init(keys.public, keys.secret);
   //when finished tell client
   event.sender.send('validKey', '');
 });
 //////////////////////////////
 //On Client Ready For Data
 ipcMain.on('readyForData', (event, arg) => {
-  event.sender.send('apiData', 'fakeDataOhBoy');//send api data
+  //load exsisting coins
+  pnd.getBalance(function(balance){
+    apiData.balances = balance;//update data to be sent
+    //load prices
+    pnd.getPrices(function(prices){
+      apiData.prices = prices;//updata data to be sent
+      event.sender.send('apiData', apiData);//send api data
+    });
+  });
 });
