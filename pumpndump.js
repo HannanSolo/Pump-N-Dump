@@ -46,11 +46,17 @@ function getPrices(callback) {
 
 //returns a day graph 
 function dayGraph(callback, symbol) {
-
+    if (symbol == 'BTC') {
+        binance.candlesticks(symbol + 'USDT', "12h", (error, ticks, symbol) => {
+            callback(ticks);
+            //get 7 days of data.
+        }, {limit: 14});
+    } else {
     binance.candlesticks(symbol + 'BTC', "12h", (error, ticks, symbol) => {
         callback(ticks);
         //get 7 days of data.
     }, {limit: 14});
+    }
 }
 
 

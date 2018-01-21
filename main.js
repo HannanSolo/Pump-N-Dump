@@ -89,6 +89,7 @@ ipcMain.on('readyForData', (event, arg) => {
   //load exsisting coins
   pnd.getBalance(function(balance){
     apiData.balances = balance;//update data to be sent
+    // console.log(apiData.balances)
     //load prices
     pnd.getPrices(function(prices){
       apiData.prices = prices;//updata data to be sent
@@ -99,15 +100,22 @@ ipcMain.on('readyForData', (event, arg) => {
 
 ipcMain.on('readyForGraph', (event, arg) => {
   let coinz = {};
+  Object.keys(apiData.balances).map(function(value, key) {
+    console.log(value);
+    pnd.graphData(function(data) {
+      // console.log(apiData.balances)
+      // console.log(data); //Prints closing prices of every 12 hours over last week. 14 data points. 
+      console.log('sent', {ticker: value, data: data});
+      event.sender.send('graphData', {ticker: value, data: data});
+    }, value)
+  })
+
   
-  pnd.graphData(function(data) {
-    // Object.keys(apiData.balances).map(function(value, key) {
-    //   console.log(key + ': ' + value);
-    // })
-    // console.log(apiData.balances)
-    // console.log(data); //Prints closing prices of every 12 hours over last week. 14 data points. 
+  // pnd.graphData(function(data) {
+  //   // console.log(apiData.balances)
+  //   // console.log(data); //Prints closing prices of every 12 hours over last week. 14 data points. 
     
-    event.sender.send('graphData', data);
-  }, "LTC")
+  //   event.sender.send('graphData', data);
+  // }, "LTC")
   
 });
