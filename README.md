@@ -1,4 +1,6 @@
-#Pump'N'Dump
+# Pump'N'Dump
+Once downloaded, install all dependancies with
+```npm install```
 
-
-Lets make some CODEzzz  B)
+You can then start the app with
+```npm start```
