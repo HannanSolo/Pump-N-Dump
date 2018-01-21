@@ -55,6 +55,10 @@ ipcRenderer.on('apiData', (event, data) => {
         ipcRenderer.send('readyForData', '');
     },5000);
 });
+ipcRenderer.send('readyForGraph', '');
+ipcRenderer.on('graphData', (event, arg) => {
+    console.log(arg);
+})
 
 //////////////////////////
 // Functions
