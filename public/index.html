@@ -141,7 +141,7 @@ function createBitCoinCard(coinName){
             +'<p class="button-text">'+coinName+'</p>'
             +'<p class="button-text"><canvas width="219" height="219"></canvas></p>'
             +'<div class="slidecontainer">'
-                +'<input type="range" min="0" max="100" value="20" class="slider" id="myRange">'
+                +'<input type="text" class="slider" id="myRange">'
                 +'<p class="coinPrice button-text">0</p>'
                 +'<p class="amount button-text">0</p>'
             +'</div>'
@@ -199,8 +199,8 @@ function createChart(coinName, gdata){
 // PUMP & DUMP
 ////////////////////////////////////
 function pump(){
-    var btcPercentage = document.querySelector("#btc .slider").value/100
-    var btcPump = apiData.balances['BTC'].available*btcPercentage;
+    // var btcPercentage = document.querySelector("#btc .slider").value/100
+    var btcPump = document.querySelector("#btc .slider").value;
     for(var coin in apiData.balances){
         var percentage = document.querySelector("#"+coin.toLowerCase()+" .slider").value/100;
         ipcRenderer.send('pump', [coin, percentage, btcPump]);
