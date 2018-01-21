@@ -11,7 +11,6 @@ function init(apiKey, apiSecret){
     });
 }
 
-
 function getBalance(callback){
     var userBalance = {};
     binance.balance(function(error, balances){

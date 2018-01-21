@@ -37,19 +37,47 @@ const {ipcRenderer} = require('electron');
 //ask for api data
 ipcRenderer.send('readyForData', '');
 //on obtained api data
+var initialData = true;
 ipcRenderer.on('apiData', (event, data) => {
-    //do something with data...
-    console.log(data);
+    //if first request
+    //if(initialData){
+        populatePage(data);
+        initialData = false;
+    //}
     //ask for more data every 2 seconds
     setTimeout(function(){
         ipcRenderer.send('readyForData', '');
     },5000);
 });
 
+
 //////////////////////////
 // Functions
 //////////////////////////
+function populatePage(data){
+    //add coin cards to html
+    var holder = document.getElementById('coins-container');
+    //create coin cards
+    for(var coin in data.balances){
+        //ignore bitcoin
+        if(coin !== 'BTC')
+            createCoinCard(coin);
+    }
+    //load graphs after coin cards
+    for(var coin in data.balances){
+        //ignore bitcoin
+        if(coin !== 'BTC')
+            createChart(coin);
+    }
+}
+
+//create cards for other coins
 function createCoinCard(coinName){
+    //skip if coin card already exsits
+    if(document.getElementById(coinName.toLowerCase()))
+        return;
+    //add coin card
+    var holder = document.getElementById('coins-container');
     holder.innerHTML +=
         '<div id='+coinName.toLowerCase()+' class="coins">'
             +'<p class="button-text">'+coinName+'</p>'
@@ -61,48 +89,28 @@ function createCoinCard(coinName){
 }
 //create coin card chart
 function createChart(coinName){
-    var ctx = document.querySelector('#'+coinName+' canvas');
+    var ctx = document.querySelector('#'+coinName.toLowerCase()+' canvas');
     //var ctx = document.getElementById('bbc');
     Chart.defaults.line.spanGaps = true;
     var coinChart = new Chart(ctx, {
         type: 'line',
-    data: {
-        labels: [0,12,24],
-        datasets: [{ 
-            data: [0,0,0],
-            borderColor: "#3e95cd",
-            fill: false
+        data: {
+            labels: [0,12,24],
+            datasets: [{ 
+                data: [0,0,0],
+                borderColor: "#3e95cd",
+                fill: false
+            }
+            ]
+        },
+        options: {
+            title: {
+            display: true,
+            text: '24H'
+            }
         }
-        ]
-    },
-    options: {
-        title: {
-        display: true,
-        text: '24H'
-        }
-    }
-});
-
+    });
 }
-
-//add coin cards to html
-var holder = document.getElementById('coins-container');
-var coins = ['bbc','abc', 'www', 'btc', 'aws', 'pop'];//place holder replace for dynamically loaded in
-//create coin cards
-for(i = 0; i < coins.length; i++){
-    createCoinCard(coins[i]);
-}
-//load graphs after coin cards
-for(i = 0; i < coins.length; i++){
-    createChart(coins[i]);
-}
-
-setTimeout(function(){
-    //load graphs after coin cards
-for(i = 0; i < coins.length; i++){
-    createChart(coins[i]);
-}
-},3000);
 
 </script>
 </body>
