@@ -8,8 +8,10 @@
 </head>
 <body>
     <div id="login-container">
-        <input id="api-key" type="text"><br/>
-        <button onclick="login()">Login</button>
+        <img id="login-icon" src="icon.png" />
+        <input id="public-key" class="apiKeys" type="text" placeholder="Public Key"><br/>
+        <input id="secret-key" class="apiKeys" type="text" placeholder="Secret Key"><br/>
+        <button id="login-button" onclick="login()">Login</button>
     </div>
 
 <!-- Electron Render -->
@@ -22,8 +24,25 @@ ipcRenderer.on('validKey', (event, arg) => {
 });
 //verify and use API Key 
 function login(){
-    ipcRenderer.send('apiKey', document.getElementById('api-key').value);
+    var apiKeys = {
+        public: document.getElementById('public-key').value,
+        secret: document.getElementById('secret-key').value
+    }
+    //return if empty login field
+    if(apiKeys.public === '' || apiKeys.secret === '')
+        alert('Missing API Keys!');
+    //send server keys
+    else
+        ipcRenderer.send('apiKey', apiKeys);
 }
+
+// - Keyboard Shortcuts
+document.addEventListener("keydown", function (event) {
+    //if enter key
+    if (event.which === 13) {
+        login();//
+    }
+});
 </script>
 </body>
 </html>
