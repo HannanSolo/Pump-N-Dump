@@ -79,6 +79,9 @@ function dump_prct(){
     ipcRenderer.send('dump-percentage', document.getElementById('dump-percentage').value);
 }
 
+function shitcoin_amount(shitcoin, pump_amount, dump_percentage){
+    ipcRenderer.send(shitcoin, pump_amount*dump_percentage)
+}
 
 
 var ctx = document.getElementById("myChart0");
