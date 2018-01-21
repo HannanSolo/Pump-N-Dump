@@ -11,45 +11,78 @@
         
 <!-- Page Container -->
 <div id="page-container">
+    <div id="addCoin" style="font-size:64px;display:inline-flex;align-items:center;justify-items:center;display:none;">
+        <button onclick="addCoinCard()" style="width:225px; height:50px; background-color:blue;border:0px"> + </button>
+    </div>
+
+    <!--main buttons-->
+    <button onclick="pump()" style="padding-top: 150px; background:none; border-style:none;" id="pump"><img width="100" src='pump.png'></button>
+    <button onclick="dump()" style="padding-top: 150px; background:none; border-style:none;" id="dump"><img width="100" src='dump.png'></button>
+
     <!-- Pump Buttons -->
     <div id="pump-container">
         <div id="coins-container">
-
         </div>
     </div>
 
     <!-- Dump Button -->
     <div id="dump-container">
-        <div id="dump-card" class="coins">
-            <p class="button-text">Bitcoin</p>
-            <p class="button-text">How much do you want to pump?</p>
-            <input id="pump-amount" type="text"><br/>
-            <button onclick="pump()">PUMP!</button>
-        </div>
+        <div id="dump-card">
+        
     </div>
 </div>
 
 <!-- Electron Render -->
-<script src="https://d3js.org/d3.v4.min.js"></script>
+
 <script>
+var apiData = {}
+const prompt = require('electron-prompt');
 //allow server&client to talk
 const {ipcRenderer} = require('electron');
 //ask for api data
 ipcRenderer.send('readyForData', '');
 //on obtained api data
-var initialData = true;
 ipcRenderer.on('apiData', (event, data) => {
-    //if first request
-    //if(initialData){
-        populatePage(data);
-        initialData = false;
-    //}
+    apiData.prices = data.prices;
+    apiData.balances = data.balances;
+    populatePage(data);
+    console.log(event);
+    console.log(data);
     //ask for more data every 2 seconds
     setTimeout(function(){
         ipcRenderer.send('readyForData', '');
     },5000);
 });
+setTimeout(function() {
+    ipcRenderer.send('readyForGraph', '')
+}, 5000);
+ipcRenderer.on('graphData', (event, arg) => {
+    apiData.ltc = arg;
+    console.log(apiData.balances);
+    console.log(apiData.ltc);
+})
 
+setInterval(function(){
+    if(apiData !== {}){
+        //...update price
+    }
+},3000)
+
+setTimeout(function(){
+    setInterval(function(){
+        for(var coin in apiData.balances){
+            document.querySelector("#"+coin.toLowerCase()+" .coinPrice").innerHTML =  document.querySelector("#"+coin.toLowerCase()+" .slider").value;            
+        }
+    },1000);
+},3000);
+
+setTimeout(function(){
+    setInterval(function(){
+        for(var coin in apiData.balances){            
+            document.querySelector("#"+coin.toLowerCase()+" .amount").innerHTML = apiData.balances[coin].available;
+        }
+    },1000);
+},4000);
 
 //////////////////////////
 // Functions
@@ -63,12 +96,19 @@ function populatePage(data){
         if(coin !== 'BTC')
             createCoinCard(coin);
     }
+    
     //load graphs after coin cards
     for(var coin in data.balances){
         //ignore bitcoin
         if(coin !== 'BTC')
-            createChart(coin);
+            if (apiData.ltc != {}) {
+                createChart(coin, apiData.ltc);
+            }  
     }
+
+    //BTC Card
+    createBitCoinCard('BTC');
+    createChart('BTC');
 }
 
 //create cards for other coins
@@ -84,6 +124,8 @@ function createCoinCard(coinName){
             +'<p class="button-text"><canvas width="219" height="219"></canvas></p>'
             +'<div class="slidecontainer">'
                 +'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
+                +'<p class="coinPrice button-text">0</p>'
+                +'<p class="amount button-text">0</p>'
             +'</div>'
         +'</div>';
 }
@@ -93,27 +135,51 @@ function createBitCoinCard(coinName){
     if(document.getElementById(coinName.toLowerCase()))
         return;
     //add coin card
-    var holder = document.getElementById('dump-container');
-    holder.innerHTML +=
+    var holder = document.getElementById('dump-card');
+    holder.innerHTML =
         '<div id='+coinName.toLowerCase()+' class="coins">'
             +'<p class="button-text">'+coinName+'</p>'
             +'<p class="button-text"><canvas width="219" height="219"></canvas></p>'
             +'<div class="slidecontainer">'
                 +'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
+                +'<p class="coinPrice button-text">0</p>'
+                +'<p class="amount button-text">0</p>'
             +'</div>'
         +'</div>';
 }
+
+function addCoinCard() {
+    console.log("called")
+    prompt({
+        title: 'Select A Coin',
+        label: 'Select A Coin:',
+        value: 'http://example.org',
+        inputAttrs: { // attrs to be set if using 'input'
+            type: 'url'
+        },
+        type: 'select', // 'select' or 'input, defaults to 'input'
+        selectOptions: { // select options if using 'select' type
+            'ETH': 'ETH' + " " + "0.1 BTC",
+            'value 2': 'Display Option 2',
+            'value 3': 'Display Option 3'
+        }
+    })
+    .then((r) => {
+        console.log('result', r); // null if window was closed, or user clicked Cancel
+    })
+    .catch(console.error);
+    }
 //create coin card chart
-function createChart(coinName){
+function createChart(coinName, gdata){
     var ctx = document.querySelector('#'+coinName.toLowerCase()+' canvas');
     //var ctx = document.getElementById('bbc');
     Chart.defaults.line.spanGaps = true;
     var coinChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: [0,12,24],
+            labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
             datasets: [{ 
-                data: [0,0,0],
+                data: gdata,
                 borderColor: "#3e95cd",
                 fill: false
             }
@@ -127,6 +193,19 @@ function createChart(coinName){
         }
     });
 }
+
+
+////////////////////////////////////
+// PUMP & DUMP
+////////////////////////////////////
+function pump(){
+    alert(apiData.balances)
+}
+
+function dump(){
+    alert('dump')
+}
+
 
 </script>
 </body>

@@ -95,6 +95,10 @@ body{
     height: auto;
 }
 
+.amount{
+    font-size: 15px !important;
+}
+
 .coins-container::-moz-selection,
 .coins-container::selection{
 	background-color:Transparent;

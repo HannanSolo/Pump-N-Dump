@@ -16,15 +16,14 @@ function createWindow () {
   // Create the browser window.
   //mainWindow = new BrowserWindow({width: 800, height: 600})
   mainWindow = new BrowserWindow({
-    width: 1250,
+    width: 1350,
     height: 800,
-    minWidth: 1020,
+    minWidth: 1250,
     minHeight: 200,
     backgroundColor: '#312450',
     // show: false,
     icon: path.join(__dirname, '256_icon.ico')
   });
-
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
@@ -79,10 +78,14 @@ ipcMain.on('apiKey', (event, keys) => {
   pnd.init(keys.public, keys.secret);
   //when finished tell client
   event.sender.send('validKey', '');
+  
 });
 //////////////////////////////
 //On Client Ready For Data
 ipcMain.on('readyForData', (event, arg) => {
+  pnd.getNewCoins(function(coins) {
+    apiData.coins = coins;
+  });
   //load exsisting coins
   pnd.getBalance(function(balance){
     apiData.balances = balance;//update data to be sent
@@ -92,4 +95,19 @@ ipcMain.on('readyForData', (event, arg) => {
       event.sender.send('apiData', apiData);//send api data
     });
   });
+});
+
+ipcMain.on('readyForGraph', (event, arg) => {
+  let coinz = {};
+  
+  pnd.graphData(function(data) {
+    // Object.keys(apiData.balances).map(function(value, key) {
+    //   console.log(key + ': ' + value);
+    // })
+    // console.log(apiData.balances)
+    // console.log(data); //Prints closing prices of every 12 hours over last week. 14 data points. 
+    
+    event.sender.send('graphData', data);
+  }, "LTC")
+  
 });
