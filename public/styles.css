@@ -96,8 +96,9 @@ body{
     /* border-radius: 100%; */
 }
 
-/* #.buttons:hover {
-#    background-color: rgba(0, 0, 0, 1);
+.buttons:hover {
+    background-color: rgba(0, 0, 0, 1);
+
     cursor: pointer;
 }
 

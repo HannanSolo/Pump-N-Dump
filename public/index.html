@@ -5,15 +5,12 @@
     <title>Pump N Dump!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="styles.css">
-    <style> /* set the CSS */
-      .line {
-        fill: none;
-        stroke: steelblue;
-        stroke-width: 2px;
-      }
-    </style>
+    <script type="text/javascript" src="js/Chart.js"></script>
+
+
 </head>
 <body>
+        
 <!-- Page Container -->
 <div id="page-container">
     <!-- Pump Buttons -->
@@ -49,29 +46,45 @@ ipcRenderer.on('apiData', (event, arg) => {
 });
 
 
+
+
+
+
+
 //add coin cards to html
-  var coins = 3;
-  var holder = document.getElementById('coins-container');
-  for(i = 0; i < coins; i++){
-      holder.innerHTML +=
-          '<div id=coin'+i+' class="buttons">'
-          +'<p class="button-text">Coin 1</p>'
-          +'<p class="button-text">Hey Look A description</p>'
-          +'<div class="slidecontainer">'
-          +'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
-          +'</div>'
-          +'</div>';
-    }
-    //verify and use API Key
-    function pump(){
-        ipcRenderer.send('pump-amount', document.getElementById('pump-amount').value);
-    }
+var coins = 6;
+var holder = document.getElementById('coins-container');
+for(i = 0; i < coins; i++){
+    holder.innerHTML +=
+        '<div id=coin'+i+' class="buttons">'
+            +'<p class="button-text">Coin 1</p>'
+            +'<p class="button-text"><canvas id="myChart" width="219" height="219"></canvas></p>'
+            +'<div class="slidecontainer">'
+                +'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
+            +'</div>'
+        +'</div>';
+}
 
-    function dump(){
-        ipcRenderer.send('apiKey', document.getElementById('api-key').value);
+var ctx = document.getElementById("myChart");
+Chart.defaults.line.spanGaps = true;
+var myChart = new Chart(ctx, {
+    type: 'line',
+  data: {
+    labels: [0,12,24],
+    datasets: [{ 
+        data: [86,1000,2999],
+        borderColor: "#3e95cd",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'BTC 24H'
     }
-
-
+  }
+});
 </script>
 </body>
 </html>
