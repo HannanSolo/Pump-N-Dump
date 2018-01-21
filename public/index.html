@@ -11,9 +11,14 @@
         
 <!-- Page Container -->
 <div id="page-container">
-    <div id="addCoin" style="font-size:64px;display:inline-flex;align-items:center;justify-items:center;">
+    <div id="addCoin" style="font-size:64px;display:inline-flex;align-items:center;justify-items:center;display:none;">
         <button onclick="addCoinCard()" style="width:225px; height:50px; background-color:blue;border:0px"> + </button>
     </div>
+
+    <!--main buttons-->
+    <button onclick="pump()" style="padding-top: 150px; background:none; border-style:none;" id="pump"><img width="100" src='pump.png'></button>
+    <button onclick="dump()" style="padding-top: 150px; background:none; border-style:none;" id="dump"><img width="100" src='dump.png'></button>
+
     <!-- Pump Buttons -->
     <div id="pump-container">
         <div id="coins-container">
@@ -66,10 +71,18 @@ setInterval(function(){
 setTimeout(function(){
     setInterval(function(){
         for(var coin in apiData.balances){
-            document.querySelector("#"+coin.toLowerCase()+" .coinPrice").innerHTML =  document.querySelector("#"+coin.toLowerCase()+" .slider").value;
+            document.querySelector("#"+coin.toLowerCase()+" .coinPrice").innerHTML =  document.querySelector("#"+coin.toLowerCase()+" .slider").value;            
         }
     },1000);
 },3000);
+
+setTimeout(function(){
+    setInterval(function(){
+        for(var coin in apiData.balances){            
+            document.querySelector("#"+coin.toLowerCase()+" .amount").innerHTML = apiData.balances[coin].available;
+        }
+    },1000);
+},4000);
 
 //////////////////////////
 // Functions
@@ -112,6 +125,7 @@ function createCoinCard(coinName){
             +'<div class="slidecontainer">'
                 +'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
                 +'<p class="coinPrice button-text">0</p>'
+                +'<p class="amount button-text">0</p>'
             +'</div>'
         +'</div>';
 }
@@ -129,13 +143,9 @@ function createBitCoinCard(coinName){
             +'<div class="slidecontainer">'
                 +'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
                 +'<p class="coinPrice button-text">0</p>'
+                +'<p class="amount button-text">0</p>'
             +'</div>'
         +'</div>';
-
-        // <p class="button-text">Bitcoin</p>
-        //     <p class="button-text">How much do you want to pump?</p>
-        //     <input id="pump-amount" type="text"><br/>
-        //     <button onclick="pump()">PUMP!</button>
 }
 
 function addCoinCard() {
@@ -183,6 +193,19 @@ function createChart(coinName, gdata){
         }
     });
 }
+
+
+////////////////////////////////////
+// PUMP & DUMP
+////////////////////////////////////
+function pump(){
+    alert(apiData.balances)
+}
+
+function dump(){
+    alert('dump')
+}
+
 
 </script>
 </body>
