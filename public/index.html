@@ -38,7 +38,8 @@ const {ipcRenderer} = require('electron');
 ipcRenderer.send('readyForData', '');
 //on obtained api data
 ipcRenderer.on('apiData', (event, data) => {
-    apiData = data
+    apiData.prices = data.prices;
+    apiData.balances = data.balances;
     populatePage(data);
     console.log(event);
     console.log(data);
