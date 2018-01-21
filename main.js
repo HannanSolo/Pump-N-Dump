@@ -21,7 +21,7 @@ function createWindow () {
     minHeight: 200,
     backgroundColor: '#312450',
     // show: false,
-    icon: path.join(__dirname, 'icon.ico')
+    icon: path.join(__dirname, '256_icon.ico')
   });
 
 

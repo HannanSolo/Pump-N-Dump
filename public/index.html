@@ -19,11 +19,16 @@
     <!-- Dump Button -->
     <div id="dump-container">
         <div id="dump-card" class="buttons">
-            <p class="button-text">Bit Coin</p>
-            <p class="button-text">Hey Look A description</p>
+            <p class="button-text">Bitcoin</p>
+            <p class="button-text">How much do you want to deposit?</p>
+            <input id="pump-amount" type="text"><br/>
+            <p class="button-text">Bitcoin Address</p>
+            <input id="btc-address" type="text"><br/>
+            <button onclick="login()">Login</button>
         </div>
     </div>
 </div>
+
 
 
 <!-- Electron Render -->
@@ -44,7 +49,7 @@ ipcRenderer.on('apiData', (event, arg) => {
     var coins = 6;
     var holder = document.getElementById('coins-container');
     for(i = 0; i < coins; i++){
-        holder.innerHTML += 
+        holder.innerHTML +=
             '<div id=coin'+i+' class="buttons">'
                 +'<p class="button-text">Coin 1</p>'
                 +'<p class="button-text">Hey Look A description</p>'
