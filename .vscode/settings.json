@@ -1,0 +1,5 @@
+{
+    "terminal.integrated.env.linux": {
+        "PATH": "/home/kub/.platformio/penv/bin:/home/kub/.nvm/versions/node/v9.2.0/bin:/home/kub/.opam/system/bin:/home/kub/.nix-profile/bin:/home/kub/.nix-profile/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:~/.nix-profile/bin/:/home/kub/.nimble/bin:~/.sbcl/bin:~/racket/bin/"
+    }
+}
