@@ -12,7 +12,7 @@ body{
     font: normal normal normal 50px Arial,sans-serif;
 }
 
-::-moz-selection{
+/* ::-moz-selection{
     background-color:Transparent;
     color:#fff;
     }
@@ -20,7 +20,7 @@ body{
 ::selection {
     background-color:Transparent;
     color:#fff;
-    }
+    } */
 
 @font-face {
     font-family: "BN-titling-oblique";
@@ -32,14 +32,46 @@ body{
     src: url(fonts/big-noodle-titling.ttf) format("truetype");
 }
 
-#apiKey{
+.apiKeys{
+    font-size: 40px;
+    font-family: "BN-titling", Fallback, sans-serif;
+}
 
+#login-icon{
+    display: block;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    border-radius: 100%;
+    border-style: solid;
+    box-shadow: 10px 2px 22px -5px;
+}
+
+#login-button{
+    display: block;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: "BN-titling", Fallback, sans-serif;
+    font-size: 40px;
+    background-color: #333947;
+    color: white;
+    border-style: solid;
+    border-color: white;
+    text-align: center;
+    border-radius: 12%;
+    box-shadow: 0px 0px 9px 0px;
 }
 
 #login-container{
     display: block;
     margin: auto;
     text-align: center;
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-38%);
 }
 
 #page-container{
@@ -84,7 +116,7 @@ body{
  font-size: 35px;
 }
 
-.buttons {
+.coins {
     display: inline-block;
     margin: auto;
     padding: 3px;

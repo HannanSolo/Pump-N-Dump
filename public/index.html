@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="styles.css">
     <script type="text/javascript" src="js/Chart.js"></script>
-
-
 </head>
 <body>
         
@@ -22,7 +20,7 @@
 
     <!-- Dump Button -->
     <div id="dump-container">
-        <div id="dump-card" class="buttons">
+        <div id="dump-card" class="coins">
             <p class="button-text">Bitcoin</p>
             <p class="button-text">How much do you want to pump?</p>
             <input id="pump-amount" type="text"><br/>
@@ -30,8 +28,6 @@
         </div>
     </div>
 </div>
-
-
 
 <!-- Electron Render -->
 <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -45,46 +41,64 @@ ipcRenderer.on('apiData', (event, arg) => {
     console.log(arg);
 });
 
-
-
-
-
-
-
-//add coin cards to html
-var coins = 6;
-var holder = document.getElementById('coins-container');
-for(i = 0; i < coins; i++){
+//////////////////////////
+// Functions
+//////////////////////////
+function createCoinCard(coinName){
     holder.innerHTML +=
-        '<div id=coin'+i+' class="buttons">'
-            +'<p class="button-text">Coin 1</p>'
-            +'<p class="button-text"><canvas id="myChart" width="219" height="219"></canvas></p>'
+        '<div id='+coinName.toLowerCase()+' class="coins">'
+            +'<p class="button-text">'+coinName+'</p>'
+            +'<p class="button-text"><canvas width="219" height="219"></canvas></p>'
             +'<div class="slidecontainer">'
                 +'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
             +'</div>'
         +'</div>';
 }
-
-var ctx = document.getElementById("myChart");
-Chart.defaults.line.spanGaps = true;
-var myChart = new Chart(ctx, {
-    type: 'line',
-  data: {
-    labels: [0,12,24],
-    datasets: [{ 
-        data: [86,1000,2999],
-        borderColor: "#3e95cd",
-        fill: false
-      }
-    ]
-  },
-  options: {
-    title: {
-      display: true,
-      text: 'BTC 24H'
+//create coin card chart
+function createChart(coinName){
+    var ctx = document.querySelector('#'+coinName+' canvas');
+    //var ctx = document.getElementById('bbc');
+    Chart.defaults.line.spanGaps = true;
+    var coinChart = new Chart(ctx, {
+        type: 'line',
+    data: {
+        labels: [0,12,24],
+        datasets: [{ 
+            data: [86,1000,2999],
+            borderColor: "#3e95cd",
+            fill: false
+        }
+        ]
+    },
+    options: {
+        title: {
+        display: true,
+        text: coinName+' 24H'
+        }
     }
-  }
 });
+
+}
+
+//add coin cards to html
+var holder = document.getElementById('coins-container');
+var coins = ['bbc','abc', 'www', 'btc', 'aws', 'pop'];//place holder replace for dynamically loaded in
+//create coin cards
+for(i = 0; i < coins.length; i++){
+    createCoinCard(coins[i]);
+}
+//load graphs after coin cards
+for(i = 0; i < coins.length; i++){
+    createChart(coins[i]);
+}
+
+setTimeout(function(){
+    //load graphs after coin cards
+for(i = 0; i < coins.length; i++){
+    createChart(coins[i]);
+}
+},3000);
+
 </script>
 </body>
 </html>
