@@ -38,7 +38,7 @@ body{
 
 #login-container{
     display: block;
-    margin: auto; 
+    margin: auto;
     text-align: center;
 }
 
@@ -98,12 +98,13 @@ body{
 
 .buttons:hover {
     background-color: rgba(0, 0, 0, 1);
+
     cursor: pointer;
 }
 
 .buttons:active {
     background-color: rgba(255, 255, 255, 1);
-}
+} */
 
 .button-text{
 	font-family: "BN-titling", Fallback, sans-serif;
