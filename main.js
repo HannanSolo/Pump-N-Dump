@@ -16,15 +16,14 @@ function createWindow () {
   // Create the browser window.
   //mainWindow = new BrowserWindow({width: 800, height: 600})
   mainWindow = new BrowserWindow({
-    width: 1250,
+    width: 1350,
     height: 800,
-    minWidth: 1020,
+    minWidth: 1250,
     minHeight: 200,
     backgroundColor: '#312450',
     // show: false,
     icon: path.join(__dirname, '256_icon.ico')
   });
-
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
@@ -86,7 +85,7 @@ ipcMain.on('apiKey', (event, keys) => {
 ipcMain.on('readyForData', (event, arg) => {
   pnd.getNewCoins(function(coins) {
     apiData.coins = coins;
-  })
+  });
   //load exsisting coins
   pnd.getBalance(function(balance){
     apiData.balances = balance;//update data to be sent
