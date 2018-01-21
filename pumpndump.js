@@ -9,17 +9,6 @@ function init(apiKey, apiSecret){
         'APIKEY':apiKey,
         'APISECRET':apiSecret,
     });
-    //load exsisting coins
-    getBalance(function(balance){
-        console.log('bitch what')
-        console.log(balance);
-    });
-    //load prices
-    getPrices(function(prices){
-        console.log(prices);
-    });
-
-    graphData
 }
 
 

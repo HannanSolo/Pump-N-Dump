@@ -37,8 +37,13 @@ const {ipcRenderer} = require('electron');
 //ask for api data
 ipcRenderer.send('readyForData', '');
 //on obtained api data
-ipcRenderer.on('apiData', (event, arg) => {
-    console.log(arg);
+ipcRenderer.on('apiData', (event, data) => {
+    //do something with data...
+    console.log(data);
+    //ask for more data every 2 seconds
+    setTimeout(function(){
+        ipcRenderer.send('readyForData', '');
+    },5000);
 });
 
 //////////////////////////
@@ -64,7 +69,7 @@ function createChart(coinName){
     data: {
         labels: [0,12,24],
         datasets: [{ 
-            data: [86,1000,2999],
+            data: [0,0,0],
             borderColor: "#3e95cd",
             fill: false
         }
@@ -73,7 +78,7 @@ function createChart(coinName){
     options: {
         title: {
         display: true,
-        text: coinName+' 24H'
+        text: '24H'
         }
     }
 });
