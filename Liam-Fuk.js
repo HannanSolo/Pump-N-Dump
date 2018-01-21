@@ -6,3 +6,4 @@ test.init('tW1x0W94x5oj0PvJMkPtvjCNYAt1x1j7lhppBP8699aeZBl2uloxUUXlwUc0S5xZ','dG
 //     console.log('bitch what')
 //     console.log(balance);
 // });
+
