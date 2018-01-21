@@ -35,7 +35,8 @@
 <!-- Electron Render -->
 
 <script>
-var apiData = {}
+var apiData = {};
+apiData.chartData = {};
 const prompt = require('electron-prompt');
 //allow server&client to talk
 const {ipcRenderer} = require('electron');
@@ -46,20 +47,23 @@ ipcRenderer.on('apiData', (event, data) => {
     apiData.prices = data.prices;
     apiData.balances = data.balances;
     populatePage(data);
-    console.log(event);
-    console.log(data);
+    // console.log(event);
+    // console.log(data);
     //ask for more data every 2 seconds
     setTimeout(function(){
         ipcRenderer.send('readyForData', '');
     },5000);
 });
-setTimeout(function() {
+setInterval(function() {
     ipcRenderer.send('readyForGraph', '')
-}, 5000);
+}, 2000);
 ipcRenderer.on('graphData', (event, arg) => {
-    apiData.ltc = arg;
-    console.log(apiData.balances);
-    console.log(apiData.ltc);
+    
+    apiData.chartData[`${arg.ticker}`] = {ticker:arg.ticker, data:arg.data}
+    // console.log(apiData.chartData)
+    // apiData.chartdata = arg;
+    // // console.log(apiData.balances);
+    // console.log(apiData.chartdata);
 })
 
 setInterval(function(){
@@ -98,17 +102,30 @@ function populatePage(data){
     }
     
     //load graphs after coin cards
-    for(var coin in data.balances){
+    setTimeout(function() {
+        for(var coin in data.balances){
         //ignore bitcoin
-        if(coin !== 'BTC')
-            if (apiData.ltc != {}) {
-                createChart(coin, apiData.ltc);
-            }  
-    }
+        console.log(coin)
+        if(coin !== 'BTC') {
+            console.log('create')
+            console.log(apiData.chartData[coin]);
+            createChart(coin, apiData.chartData[coin].data)
+        }
+            
+            // if (apiData.chartData != {}) {
+            //     // createChart(coin, apiData.chartData[coin].data);
+               
+            // }  
+        }
+    }, 3000)
+    
 
     //BTC Card
     createBitCoinCard('BTC');
-    createChart('BTC');
+    setTimeout(function() {
+        createChart('BTC', apiData.chartData['BTC'].data);
+    })
+    
 }
 
 //create cards for other coins
@@ -177,7 +194,7 @@ function createChart(coinName, gdata){
     var coinChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+            labels: [1, '', 2, '', 3, '', 4, '', 5, '', 6, '', 7, ''],
             datasets: [{ 
                 data: gdata,
                 borderColor: "#3e95cd",
@@ -188,7 +205,7 @@ function createChart(coinName, gdata){
         options: {
             title: {
             display: true,
-            text: '24H'
+            text: '7 Days'
             }
         }
     });
