@@ -52,11 +52,8 @@ var holder = document.getElementById('coins-container');
 for(i = 0; i < coins; i++){
     holder.innerHTML +=
         '<div id=coin'+i+' class="buttons">'
-            +'<p class="button-text">Coin 1</p>'
-            +'<div class="input-group mb-3">'
-              +'<input type="text" id="shitcoin" class="form-control" aria-label="Text input with dropdown button">'
-            +'</div>'
-            +'<p class="button-text"><canvas id="myChart" width="200" height="200"></canvas></p>'
+            +'<p class="button-text" id="shitcoin">XMR</p>'
+            +'<p class="button-text"><canvas id="myChart'+i+'"'+'width="200" height="200"></canvas></p>'
             +'<div class="slidecontainer">'
               +'<input type="range" min="1" max="100" value="50" class="slider" id="dump-percentage">'
             +'</div>'
@@ -83,7 +80,8 @@ function dump_prct(){
 }
 
 
-var ctx = document.getElementById("myChart");
+
+var ctx = document.getElementById("myChart0");
 Chart.defaults.line.spanGaps = true;
 var myChart = new Chart(ctx, {
     type: 'line',
